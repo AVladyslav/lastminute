@@ -34,7 +34,7 @@
 						<label for="pwd">Password:</label>
 						<input type="password" class="form-control" name="pwd" required>
 					</div>
-					<button type="submit" class="btn btn-primary" style="float: right" name="register_btn">Submit</button>
+					<button type="submit" class="btn btn-primary" style="float: right" name="login_btn">Submit</button>
 				</form>
 			</div>
 		</div>

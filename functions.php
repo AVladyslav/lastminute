@@ -49,7 +49,7 @@
 				writeUser($idRole, $idAddress);
 
 				$_SESSION['success']  = "New user successfully created!!";
-				//header('location: home.php');
+				header('location: home.php');
 			}else{
 				$idCountry = writeCountry();
 				$idRegion = writeRegion($idCountry);
@@ -60,8 +60,9 @@
 				// get id of the created user
 
 				$_SESSION['user'] = getUserById($logged_in_user_id); // put logged in user in session
+				$_SESSION['user_role'] = 'USER';
 				$_SESSION['success']  = "You are now logged in";
-				//header('location: index.php');				
+				header('location: index.php');				
 			}
 
 		}
@@ -78,8 +79,8 @@
 		}
 
 		$email = e($_POST['email']);
-		$sql = "SELECT COUNT(*) AS number_of_users FROM user WHERE email = '$email'";
-		$result = mysqli_query($db, $sql);
+		$query = "SELECT COUNT(*) AS number_of_users FROM user WHERE email = '$email'";
+		$result = mysqli_query($db, $query);
 
 		$row = mysqli_fetch_assoc($result);
 		if ($row['number_of_users'] > 0) {
@@ -171,7 +172,6 @@
 	}
 
 
-
 	function writeAddress($idCity)
 	{
 		global $db, $address;
@@ -242,16 +242,33 @@
 		return $user;
 	}
 
+
+	function getUserRoleById($id)
+	{
+		global $db;
+
+		$query = "SELECT idRole FROM user_role WHERE idUser = '$id";
+		$result = mysqli_query($db, $query);
+		$row = mysqli_fetch_assoc($result);
+		$idRole = $row['idRole'];
+
+		$query = "SELECT role FROM role WHERE idRole = '$idRole";
+		$result = mysqli_query($db, $query);
+		$row = mysqli_fetch_assoc($result);
+
+		return $row['role'];
+	}
+
 	// LOGIN USER
 	function login(){
-		global $db, $username, $errors;
+		global $db, $email, $errors;
 
 		// grap form values
-		$username = e($_POST['username']);
-		$password = e($_POST['password']);
+		$email = e($_POST['email']);
+		$password = e($_POST['pwd']);
 
 		// make sure form is filled properly
-		if (empty($username)) {
+		if (empty($email)) {
 			array_push($errors, "Username is required");
 		}
 		if (empty($password)) {
@@ -262,25 +279,28 @@
 		if (count($errors) == 0) {
 			$password = md5($password);
 
-			$query = "SELECT * FROM users WHERE username='$username' AND password='$password' LIMIT 1";
+			$query = "SELECT * FROM user WHERE email='$email' AND password='$password' LIMIT 1";
 			$results = mysqli_query($db, $query);
 
 			if (mysqli_num_rows($results) == 1) { // user found
 				// check if user is admin or user
 				$logged_in_user = mysqli_fetch_assoc($results);
-				if ($logged_in_user['user_type'] == 'admin') {
+				$user_role = getUserRoleById($logged_in_user['idUser']);
+				if ($user_role == 'ADMIN') {
 
 					$_SESSION['user'] = $logged_in_user;
+					$_SESSION['user_role'] = $user_role;
 					$_SESSION['success']  = "You are now logged in";
 					header('location: admin/home.php');		  
 				}else{
 					$_SESSION['user'] = $logged_in_user;
+					$_SESSION['user_role'] = $user_role;
 					$_SESSION['success']  = "You are now logged in";
 
 					header('location: index.php');
 				}
 			}else {
-				array_push($errors, "Wrong username/password combination");
+				array_push($errors, "Wrong email/password combination");
 			}
 		}
 	}
@@ -294,31 +314,27 @@
 		}
 	}
 
+
 	function isAdmin()
 	{
-		if (isset($_SESSION['user']) && $_SESSION['user']['user_type'] == 'admin' ) {
+		if (isset($_SESSION['user']) && $_SESSION['user_role'] == 'ADMIN' ) {
 			return true;
 		}else{
 			return false;
 		}
 	}
 
+
+//TODO dokończyć w razie potrzeby
+	function getUserInfo()
+	{
+		return "Name: " . $_SESSION['user']['name'];
+	}
+
 	// escape string
 	function e($val){
 		global $db;
 		return mysqli_real_escape_string($db, trim($val));
-	}
-
-	function display_error() {
-		global $errors;
-
-		if (count($errors) > 0){
-			echo '<div class="error">';
-				foreach ($errors as $error){
-					echo $error .'<br>';
-				}
-			echo '</div>';
-		}
 	}
 
 ?>
