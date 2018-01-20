@@ -33,9 +33,7 @@
 	function register(){
 		global $db, $errors, $logged_in_user_id;
 
-		if (e($_POST['pwd1']) != e($_POST['pwd2'])) {
-			array_push($errors, "The two passwords do not match");
-		}
+		registrationCheckForErrors();
 		getAllRegistrationData();
 
 		if (count($errors) == 0) {
@@ -70,6 +68,24 @@
 
 	}
 
+
+	function registrationCheckForErrors()
+	{
+		global $errors, $db;
+
+		if (e($_POST['pwd1']) != e($_POST['pwd2'])) {
+			array_push($errors, "The two passwords do not match");
+		}
+
+		$email = e($_POST['email']);
+		$sql = "SELECT COUNT(*) AS number_of_users FROM user WHERE email = '$email'";
+		$result = mysqli_query($db, $sql);
+
+		$row = mysqli_fetch_assoc($result);
+		if ($row['number_of_users'] > 0) {
+			array_push($errors, "Sorry, but user with this email already exist. Choose another one.");
+		}
+	}
 
 	function getAllRegistrationData()
 	{
