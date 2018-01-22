@@ -16,6 +16,10 @@
 </head>
 <body>
 	<?php
+		$boardBasis = array();
+		if (isset($_GET['boardBasis'])) {
+			$boardBasis = $_GET['boardBasis'];
+		}
 		$countries = array();
 		if (isset($_GET['countries'])) {
 			$countries = $_GET['countries'];
@@ -31,6 +35,10 @@
 		$roomsTypes = array();
 		if (isset($_GET['roomsTypes'])) {
 			$roomsTypes = $_GET['roomsTypes'];
+		}
+		$organizers = array();
+		if (isset($_GET['organizers'])) {
+			$organizers = $_GET['organizers'];
 		}
 	?>
 	<nav class="navbar navbar-default navbar-fixed-top">
@@ -48,16 +56,24 @@
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="countries.php"><span class="glyphicon glyphicon-globe"></span> Countries</a></li>
-				</ul>
 				<form class="navbar-form navbar-left" method="GET" action="index.php">
 					<div class="form-group">
 						<input type="text" class="form-control" placeholder="Search everywhere" name="value">
 					</div>
-					<button type="submit" class="btn btn_main_search">Search</button>
+					<button type="submit" class="btn btn_main_search"><span class="glyphicon glyphicon-search"></span> Search</button>
 				</form>
+
 				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort by <span class=" glyphicon glyphicon-sort"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-alphabet"> Hotel A-Z</a></li>
+							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-alphabet-alt"> Hotel Z-A </a></li>
+							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-order"> Price UP</a></li>
+							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-order-alt"> Price DOWN </a></li>
+						</ul>
+					</li>
+					<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-user"></span> User</a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -68,14 +84,26 @@
 
 	<div class="sidenav">
 		<form action="index.php" method="GET">
+			<label><span class="glyphicon glyphicon-filter"></span> Filter</label>
 			<div class="form-group">
-				<label for="min">min:</label>
+				<label for="min"><span class="glyphicon glyphicon-usd"></span> min:</label>
 				<input type="text" class="form-control" name="min" style="padding-left: 20px">
-				<label for="max">max:</label>
+				<label for="max"><span class="glyphicon glyphicon-usd"></span> max:</label>
 				<input type="text" class="form-control" name="max">
 			</div>
 			<fieldset>
-				<legend>Country</legend>
+				<legend><span class="glyphicon glyphicon-cutlery"> Board basis</legend>
+				<?php 
+					foreach (getAllBoardBasis() as $boardBasisRow) {
+						if (in_array($boardBasisRow[0], $boardBasis)) {
+						 	?> <input type="checkbox" name="boardBasis[]" value="<?php echo $boardBasisRow[0]; ?>" checked/><?php echo $boardBasisRow[1]; ?><br /> <?php
+						} else {
+							?> <input type="checkbox" name="boardBasis[]" value="<?php echo $boardBasisRow[0]; ?>" /><?php echo $boardBasisRow[1]; ?><br /> <?php
+						}
+					} ?>
+			</fieldset>
+			<fieldset>
+				<legend><span class="glyphicon glyphicon glyphicon-globe"></span> <span class="glyphicon glyphicon-flag"></span> Country</legend>
 				<?php 
 					foreach (getAllCountries() as $countryRow) {
 						if (in_array($countryRow[0], $countries)) {
@@ -86,7 +114,7 @@
 					} ?>
 			</fieldset>
 			<fieldset>
-				<legend>Rooms types</legend>
+				<legend><span class="glyphicon glyphicon-tent"> <span class="glyphicon glyphicon-bed"> Rooms types</legend>
 				<?php 
 					foreach (getAllRoomsTypes() as $roomsTypeRow) {
 						if (in_array($roomsTypeRow[0], $roomsTypes)) {
@@ -97,7 +125,7 @@
 					} ?>
 			</fieldset>
 			<fieldset>
-				<legend>Rooms facilities</legend>
+				<legend><span class="glyphicon glyphicon-lamp"></span> <span class="glyphicon glyphicon-cd"></span> <span class="glyphicon glyphicon-phone-alt"></span> Rooms facilities</legend>
 				<?php 
 					foreach (getAllRoomsFacilities() as $roomsFacilityRow) {
 						if (in_array($roomsFacilityRow[0], $roomsFacilities)) {
@@ -108,13 +136,24 @@
 					} ?>
 			</fieldset>
 			<fieldset>
-				<legend>Hotels services</legend>
+				<legend><span class="glyphicon glyphicon-blackboard"></span> <span class="glyphicon glyphicon-tree-deciduous"></span> <span class="glyphicon glyphicon-film"></span> <span class="glyphicon glyphicon-glass"></span> Hotels services</legend>
 				<?php 
 					foreach (getAllHotelsServices() as $hotelsServiceRow) {
 						if (in_array($hotelsServiceRow[0], $hotelsServices)) {
 						 	?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" checked/><?php echo $hotelsServiceRow[1]; ?><br /> <?php
 						} else {
 							?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" /><?php echo $hotelsServiceRow[1]; ?><br /> <?php
+						}
+					} ?>
+			</fieldset>
+			<fieldset>
+				<legend> <span class="glyphicon glyphicon-info-sign"></span> Organizer</legend>
+				<?php 
+					foreach (getAllOrganizers() as $organizerRow) {
+						if (in_array($organizerRow[0], $organizers)) {
+						 	?> <input type="checkbox" name="organizers[]" value="<?php echo $organizerRow[0]; ?>" checked/><?php echo $organizerRow[1]; ?><br /> <?php
+						} else {
+							?> <input type="checkbox" name="organizers[]" value="<?php echo $organizerRow[0]; ?>" /><?php echo $organizerRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>

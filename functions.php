@@ -337,6 +337,14 @@
 		return mysqli_real_escape_string($db, trim($val));
 	}
 
+	function getAllBoardBasis(){
+		global $db;
+
+		$sql = "SELECT * FROM board_basis";
+		$result = $db->query($sql);
+		return $result->fetch_all();
+	}
+
 	function getAllCountries(){
 		global $db;
 
@@ -365,6 +373,16 @@
 		global $db;
 
 		$sql = "SELECT * FROM rooms_type";
+		$result = $db->query($sql);
+		return $result->fetch_all();
+	}
+
+
+	function getAllOrganizers()
+	{
+		global $db;
+
+		$sql = "SELECT * FROM organizer";
 		$result = $db->query($sql);
 		return $result->fetch_all();
 	}
