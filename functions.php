@@ -337,4 +337,13 @@
 		return mysqli_real_escape_string($db, trim($val));
 	}
 
+	function getAllCountries(){
+		global db;
+
+		$sql = "SELECT * FROM country";
+		$result = $db->query($sql);
+		return $mysqli->fetch_all();
+
+	}
+
 ?>

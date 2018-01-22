@@ -45,6 +45,7 @@
 	</nav>
 
 	<div class="sidenav">
+		f
 		<a href="#about">About</a>
 		<a href="#services">Services</a>
 		<a href="#clients">Clients</a>
@@ -56,11 +57,18 @@
 				<label for="max">max:</label>
 				<input type="text" class="form-control" name="max">
 			</div>
-			<input type="checkbox" name="chk_group[]" value="value1" />Value 1<br />
-			<input type="checkbox" name="chk_group[]" value="value2" />Value 2<br />
-			<input type="checkbox" name="chk_group[]" value="value3" />Value 3<br />
+			<fieldset>
+				<legend>Country</legend>
+				<<?php 
+					foreach ($getAllCountries() as $countryRow) { ?>
+						<input type="checkbox" name="countries[]" value="<?php  echos $countryRow['country']?>" />Value 1<br />
+				<?php } ?>
+				<input type="checkbox" name="countries[]" value="value1" />Value 1<br />
+				<input type="checkbox" name="countries[]" value="value2" />Value 2<br />
+				<input type="checkbox" name="countries[]" value="value3" />Value 3<br />
+			</fieldset>
 
-			<button type="submit" class="btn btn-default" style="float: right;">Apply</button>
+			<button type="submit" class="btn btn-default" style="float: right; margin-bottom: 50px">Apply</button>
 		</form>
 	</div>
 
