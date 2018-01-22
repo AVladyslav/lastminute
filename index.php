@@ -1,4 +1,8 @@
-<?php include 'functions.php'; ?>
+<?php include 'functions.php'; 
+
+	
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,6 +15,24 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<?php
+		$countries = array();
+		if (isset($_GET['countries'])) {
+			$countries = $_GET['countries'];
+		}
+		$hotelsServices = array();
+		if (isset($_GET['hotelsServices'])) {
+			$hotelsServices = $_GET['hotelsServices'];
+		}
+		$roomsFacilities = array();
+		if (isset($_GET['roomsFacilities'])) {
+			$roomsFacilities = $_GET['roomsFacilities'];
+		}
+		$roomsTypes = array();
+		if (isset($_GET['roomsTypes'])) {
+			$roomsTypes = $_GET['roomsTypes'];
+		}
+	?>
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 		<!-- Brand and toggle get grouped for better mobile display -->
@@ -45,34 +67,68 @@
 	</nav>
 
 	<div class="sidenav">
-		f
-		<a href="#about">About</a>
-		<a href="#services">Services</a>
-		<a href="#clients">Clients</a>
-		<a href="#contact">Contact</a>
 		<form action="index.php" method="GET">
 			<div class="form-group">
 				<label for="min">min:</label>
-				<input type="text" class="form-control" name="min" style="left: 10px">
+				<input type="text" class="form-control" name="min" style="padding-left: 20px">
 				<label for="max">max:</label>
 				<input type="text" class="form-control" name="max">
 			</div>
 			<fieldset>
 				<legend>Country</legend>
-				<<?php 
-					foreach ($getAllCountries() as $countryRow) { ?>
-						<input type="checkbox" name="countries[]" value="<?php  echos $countryRow['country']?>" />Value 1<br />
-				<?php } ?>
-				<input type="checkbox" name="countries[]" value="value1" />Value 1<br />
-				<input type="checkbox" name="countries[]" value="value2" />Value 2<br />
-				<input type="checkbox" name="countries[]" value="value3" />Value 3<br />
+				<?php 
+					foreach (getAllCountries() as $countryRow) {
+						if (in_array($countryRow[0], $countries)) {
+						 	?> <input type="checkbox" name="countries[]" value="<?php echo $countryRow[0]; ?>" checked/><?php echo $countryRow[1]; ?><br /> <?php
+						} else {
+							?> <input type="checkbox" name="countries[]" value="<?php echo $countryRow[0]; ?>" /><?php echo $countryRow[1]; ?><br /> <?php
+						}
+					} ?>
 			</fieldset>
-
+			<fieldset>
+				<legend>Rooms types</legend>
+				<?php 
+					foreach (getAllRoomsTypes() as $roomsTypeRow) {
+						if (in_array($roomsTypeRow[0], $roomsTypes)) {
+						 	?> <input type="checkbox" name="roomsTypes[]" value="<?php echo $roomsTypeRow[0]; ?>" checked/><?php echo $roomsTypeRow[1]; ?><br /> <?php
+						} else {
+							?> <input type="checkbox" name="roomsTypes[]" value="<?php echo $roomsTypeRow[0]; ?>" /><?php echo $roomsTypeRow[1]; ?><br /> <?php
+						}
+					} ?>
+			</fieldset>
+			<fieldset>
+				<legend>Rooms facilities</legend>
+				<?php 
+					foreach (getAllRoomsFacilities() as $roomsFacilityRow) {
+						if (in_array($roomsFacilityRow[0], $roomsFacilities)) {
+						 	?> <input type="checkbox" name="roomsFacilities[]" value="<?php echo $roomsFacilityRow[0]; ?>" checked/><?php echo $roomsFacilityRow[1]; ?><br /> <?php
+						} else {
+							?> <input type="checkbox" name="roomsFacilities[]" value="<?php echo $roomsFacilityRow[0]; ?>" /><?php echo $roomsFacilityRow[1]; ?><br /> <?php
+						}
+					} ?>
+			</fieldset>
+			<fieldset>
+				<legend>Hotels services</legend>
+				<?php 
+					foreach (getAllHotelsServices() as $hotelsServiceRow) {
+						if (in_array($hotelsServiceRow[0], $hotelsServices)) {
+						 	?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" checked/><?php echo $hotelsServiceRow[1]; ?><br /> <?php
+						} else {
+							?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" /><?php echo $hotelsServiceRow[1]; ?><br /> <?php
+						}
+					} ?>
+			</fieldset>
 			<button type="submit" class="btn btn-default" style="float: right; margin-bottom: 50px">Apply</button>
 		</form>
 	</div>
 
-	<div class="container" style="margin-top:50px">
+	<div class="container" style="margin-left:200px; margin-top: 50px">
+		<h1><?php echo getUserInfo(); ?> </h1>
+		<?php 
+		foreach ($countries as $country => $value) {
+			echo $value . "<br>";
+		}
+		?>
 		<h1>Fixed Navbar</h1>
 		
 		<h1>jasdfkhsakjdlhf</h1> sadkfjhsalkdjfh asdkjkfhakjsdfasdkfh
@@ -83,16 +139,15 @@
 		hsajkdhfksjahfd
 		hsgfkjhgsadfgasdkj
 	</div>
-	<h1><?php echo getUserInfo(); ?> </h1>
 </body>
 </html>
 
-
+<?--
 ///////////////////////////////
 //	Dodać warunek			///
 ///////////////////////////////
 
-
+?>
 <? php /*
 	if (!isLoggedIn()) {
 		header('location: login.php');

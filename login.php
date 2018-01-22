@@ -1,9 +1,6 @@
 <?php include('functions.php') ?>
 <!DOCTYPE html>
 <html lang="en-US">
-
-
-
 	<head>
 		<title>LM registration</title>
 		<link rel="stylesheet" type="text/css" href="styles.css">

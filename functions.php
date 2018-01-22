@@ -338,12 +338,34 @@
 	}
 
 	function getAllCountries(){
-		global db;
+		global $db;
 
 		$sql = "SELECT * FROM country";
 		$result = $db->query($sql);
-		return $mysqli->fetch_all();
-
+		return $result->fetch_all();
 	}
 
+	function getAllHotelsServices(){
+		global $db;
+
+		$sql = "SELECT * FROM hotels_service";
+		$result = $db->query($sql);
+		return $result->fetch_all();
+	}
+
+	function getAllRoomsFacilities(){
+		global $db;
+
+		$sql = "SELECT * FROM rooms_facility";
+		$result = $db->query($sql);
+		return $result->fetch_all();
+	}
+
+	function getAllRoomsTypes(){
+		global $db;
+
+		$sql = "SELECT * FROM rooms_type";
+		$result = $db->query($sql);
+		return $result->fetch_all();
+	}
 ?>
