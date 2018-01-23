@@ -31,7 +31,9 @@
 						<label for="pwd">Password:</label>
 						<input type="password" class="form-control" name="pwd" required>
 					</div>
-					<button type="submit" class="btn btn-primary" style="float: right" name="login_btn">Submit</button>
+					<a href="registration.php">Sign Up</a>
+					<a href="index.php" style="padding-left: 15px;">Offers</a>
+					<button type="submit" class="btn btn-primary" style="float: right;" name="login_btn">Submit</button>
 				</form>
 
 			</div>

@@ -42,7 +42,7 @@
 		}
 	?>
 	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container-fluid">
+		<div class="container-fluid" style="background-color: skyblue">
 		<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -51,44 +51,58 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.php">Last Minute</a>
+				<a class="navbar-brand" href="index.php" style="color: #190967;">Last Minute</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<form class="navbar-form navbar-left" method="GET" action="index.php">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="Search everywhere" name="value">
+						<input type="text" class="form-control" placeholder="Search offers" name="value">
 					</div>
-					<button type="submit" class="btn btn_main_search"><span class="glyphicon glyphicon-search"></span> Search</button>
+					<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span> Search</button>
 				</form>
 
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort by <span class=" glyphicon glyphicon-sort"></span></a>
+						<a href="#" style="color: #190967;" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort by <span class=" glyphicon glyphicon-sort"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-alphabet"> Hotel A-Z</a></li>
-							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-alphabet-alt"> Hotel Z-A </a></li>
-							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-order"> Price UP</a></li>
-							<li><a href="#" style="font-size: 110%;"><span class=" glyphicon glyphicon-sort-by-order-alt"> Price DOWN </a></li>
+							<li><a href="#" style="font-size: 110%; color: #190967;"><span class=" glyphicon glyphicon-sort-by-alphabet"> Hotel A-Z</a></li>
+							<li><a href="#" style="font-size: 110%; color: #190967;"><span class=" glyphicon glyphicon-sort-by-alphabet-alt"> Hotel Z-A </a></li>
+							<li><a href="#" style="font-size: 110%; color: #190967;"><span class=" glyphicon glyphicon-sort-by-order"> Price UP</a></li>
+							<li><a href="#" style="font-size: 110%; color: #190967;"><span class=" glyphicon glyphicon-sort-by-order-alt"> Price DOWN </a></li>
 						</ul>
 					</li>
-					<li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> User</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-					<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+					<?php 
+						if(isAdmin()) {
+							?>
+							<li><a href="add_offer.php" style="color: #190967;"><span class="glyphicon glyphicon-plus"></span> Add offer</a></li>
+							<li><a href="users.php" style="color: #190967;"><span class="glyphicon glyphicon-user"></span> <span class="glyphicon glyphicon-user"></span> Users</a></li>
+						<?php }
+						if(isLoggedIn() && !isAdmin()) { ?>
+							<li><a href="shopping_cart.php" style="color: #190967;"><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</a></li>
+							<li><a href="account.php" style="color: #190967;"><span class="glyphicon glyphicon-user"></span> Account</a></li>
+						<?php }
+						if(!isLoggedIn()) { ?>
+							<li><a href="registration.php" style="color: #190967;"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+							<li><a href="login.php" style="color: #190967;"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+						<?php }
+						if(isLoggedIn()) {
+							?>
+							<li><a href="index.php?logout='1'" style="color: red;"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						<?php } ?>
 				</ul>
 			</div><!-- /.navbar-collapse -->
 		</div><!-- /.container-fluid -->
 	</nav>
 
-	<div class="sidenav">
+	<div class="sidenav" style="background-color: skyblue;">
 		<form action="index.php" method="GET">
-			<label><span class="glyphicon glyphicon-filter"></span> Filter</label>
+			<legend><span class="glyphicon glyphicon-filter"></span> Filter</legend>
 			<div class="form-group">
-				<label for="min"><span class="glyphicon glyphicon-usd"></span> min:</label>
+				<legend><span class="glyphicon glyphicon-usd"></span> min:</legend>
 				<input type="text" class="form-control" name="min" style="padding-left: 20px">
-				<label for="max"><span class="glyphicon glyphicon-usd"></span> max:</label>
+				<legend><span class="glyphicon glyphicon-usd"></span> max:</legend>
 				<input type="text" class="form-control" name="max">
 			</div>
 			<fieldset>
@@ -96,9 +110,9 @@
 				<?php 
 					foreach (getAllBoardBasis() as $boardBasisRow) {
 						if (in_array($boardBasisRow[0], $boardBasis)) {
-						 	?> <input type="checkbox" name="boardBasis[]" value="<?php echo $boardBasisRow[0]; ?>" checked/><?php echo $boardBasisRow[1]; ?><br /> <?php
+						 	?> <input type="checkbox" name="boardBasis[]" value="<?php echo $boardBasisRow[0]; ?>" checked/> <?php echo $boardBasisRow[1]; ?><br /> <?php
 						} else {
-							?> <input type="checkbox" name="boardBasis[]" value="<?php echo $boardBasisRow[0]; ?>" /><?php echo $boardBasisRow[1]; ?><br /> <?php
+							?> <input type="checkbox" name="boardBasis[]" value="<?php echo $boardBasisRow[0]; ?>" /> <?php echo $boardBasisRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>
@@ -107,9 +121,9 @@
 				<?php 
 					foreach (getAllCountries() as $countryRow) {
 						if (in_array($countryRow[0], $countries)) {
-						 	?> <input type="checkbox" name="countries[]" value="<?php echo $countryRow[0]; ?>" checked/><?php echo $countryRow[1]; ?><br /> <?php
+						 	?> <input type="checkbox" name="countries[]" value="<?php echo $countryRow[0]; ?>" checked/> <?php echo $countryRow[1]; ?><br /> <?php
 						} else {
-							?> <input type="checkbox" name="countries[]" value="<?php echo $countryRow[0]; ?>" /><?php echo $countryRow[1]; ?><br /> <?php
+							?> <input type="checkbox" name="countries[]" value="<?php echo $countryRow[0]; ?>" /> <?php echo $countryRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>
@@ -118,9 +132,9 @@
 				<?php 
 					foreach (getAllRoomsTypes() as $roomsTypeRow) {
 						if (in_array($roomsTypeRow[0], $roomsTypes)) {
-						 	?> <input type="checkbox" name="roomsTypes[]" value="<?php echo $roomsTypeRow[0]; ?>" checked/><?php echo $roomsTypeRow[1]; ?><br /> <?php
+						 	?> <input type="checkbox" name="roomsTypes[]" value="<?php echo $roomsTypeRow[0]; ?>" checked/> <?php echo $roomsTypeRow[1]; ?><br /> <?php
 						} else {
-							?> <input type="checkbox" name="roomsTypes[]" value="<?php echo $roomsTypeRow[0]; ?>" /><?php echo $roomsTypeRow[1]; ?><br /> <?php
+							?> <input type="checkbox" name="roomsTypes[]" value="<?php echo $roomsTypeRow[0]; ?>" /> <?php echo $roomsTypeRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>
@@ -129,9 +143,9 @@
 				<?php 
 					foreach (getAllRoomsFacilities() as $roomsFacilityRow) {
 						if (in_array($roomsFacilityRow[0], $roomsFacilities)) {
-						 	?> <input type="checkbox" name="roomsFacilities[]" value="<?php echo $roomsFacilityRow[0]; ?>" checked/><?php echo $roomsFacilityRow[1]; ?><br /> <?php
+						 	?> <input type="checkbox" name="roomsFacilities[]" value="<?php echo $roomsFacilityRow[0]; ?>" checked/> <?php echo $roomsFacilityRow[1]; ?><br /> <?php
 						} else {
-							?> <input type="checkbox" name="roomsFacilities[]" value="<?php echo $roomsFacilityRow[0]; ?>" /><?php echo $roomsFacilityRow[1]; ?><br /> <?php
+							?> <input type="checkbox" name="roomsFacilities[]" value="<?php echo $roomsFacilityRow[0]; ?>" /> <?php echo $roomsFacilityRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>
@@ -140,9 +154,9 @@
 				<?php 
 					foreach (getAllHotelsServices() as $hotelsServiceRow) {
 						if (in_array($hotelsServiceRow[0], $hotelsServices)) {
-						 	?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" checked/><?php echo $hotelsServiceRow[1]; ?><br /> <?php
+						 	?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" checked/> <?php echo $hotelsServiceRow[1]; ?><br /> <?php
 						} else {
-							?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" /><?php echo $hotelsServiceRow[1]; ?><br /> <?php
+							?> <input type="checkbox" name="hotelsServices[]" value="<?php echo $hotelsServiceRow[0]; ?>" /> <?php echo $hotelsServiceRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>
@@ -151,32 +165,56 @@
 				<?php 
 					foreach (getAllOrganizers() as $organizerRow) {
 						if (in_array($organizerRow[0], $organizers)) {
-						 	?> <input type="checkbox" name="organizers[]" value="<?php echo $organizerRow[0]; ?>" checked/><?php echo $organizerRow[1]; ?><br /> <?php
+						 	?> <input type="checkbox" name="organizers[]" value="<?php echo $organizerRow[0]; ?>" checked/> <?php echo $organizerRow[1]; ?><br /> <?php
 						} else {
-							?> <input type="checkbox" name="organizers[]" value="<?php echo $organizerRow[0]; ?>" /><?php echo $organizerRow[1]; ?><br /> <?php
+							?> <input type="checkbox" name="organizers[]" value="<?php echo $organizerRow[0]; ?>" /> <?php echo $organizerRow[1]; ?><br /> <?php
 						}
 					} ?>
 			</fieldset>
-			<button type="submit" class="btn btn-default" style="float: right; margin-bottom: 50px">Apply</button>
+			<button type="submit" class="btn btn-primary" style="float: right; margin-bottom: 50px">Apply</button>
 		</form>
 	</div>
 
-	<div class="container" style="margin-left:200px; margin-top: 50px">
-		<h1><?php echo getUserInfo(); ?> </h1>
-		<?php 
-		foreach ($countries as $country => $value) {
-			echo $value . "<br>";
-		}
-		?>
-		<h1>Fixed Navbar</h1>
-		
-		<h1>jasdfkhsakjdlhf</h1> sadkfjhsalkdjfh asdkjkfhakjsdfasdkfh
-		asiduhfklashdfkjshdafkj
-
-		asuhdfkahsdlkfj
-		asdkhfkljsadh
-		hsajkdhfksjahfd
-		hsgfkjhgsadfgasdkj
+	<div class="container-fluid" style="margin-left:200px; margin-top: 50px">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Image</th>
+					<th>Offer</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach (getAllOffers() as $offer) {
+					?>
+					<tr>
+						<td>
+							<?php $photo = getPhoto($offer['0']); ?>
+							<img src="<?php echo $photo['source'];?>" alt="HTML5 Icon" width="20%" height="20%"" / > 
+						</td>
+						<td>
+							<a href="<?php echo "offer.php?idOffer=" . $offer['0']; ?>"><?php echo getHotelPath($offer['4']); ?></a>
+							<br>
+							Organizer = <?php echo getOrganizerName($offer['8']); ?>
+							<br>
+							<b>price: <?php echo $offer['1'] . " " . $offer['2']; ?></b>
+						</td>
+					</tr>
+					<?php
+				}
+				/*for ($i=0; $i < 2; $i++) {
+					?>
+					<tr>
+					<td>
+					 <img src="Photos/costa-caleta-basen-576618070-570-428.jpg" alt="HTML5 Icon" width="20%" height="20%"" / > 
+					</td>
+					<td>
+						<a href=""></a>
+					</td>
+					</tr>
+					<?php
+				}*/ ?>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

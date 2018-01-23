@@ -1,5 +1,5 @@
 body {
-	background-color: SkyBlue;
+	background-color: aliceblue;
 }
 
 .sidenav {
@@ -25,3 +25,6 @@ body {
 	color: #064579;
 }
 
+legend {
+	font-size: 16px;
+}

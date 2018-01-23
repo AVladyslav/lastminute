@@ -26,7 +26,7 @@
 	if (isset($_GET['logout'])) {
 		session_destroy();
 		unset($_SESSION['user']);
-		header("location: ../login.php");
+		header("location: login.php");
 	}
 
 	// REGISTER USER
@@ -247,15 +247,16 @@
 	{
 		global $db;
 
-		$query = "SELECT idRole FROM user_role WHERE idUser = '$id";
+		$query = "SELECT idRole FROM user_role WHERE idUser = '$id'";
 		$result = mysqli_query($db, $query);
 		$row = mysqli_fetch_assoc($result);
 		$idRole = $row['idRole'];
 
-		$query = "SELECT role FROM role WHERE idRole = '$idRole";
+		$query = "SELECT role FROM role WHERE idRole = '$idRole'";
 		$result = mysqli_query($db, $query);
 		$row = mysqli_fetch_assoc($result);
 
+		echo "idUser = " . $id . ", idRole = " . $idRole . ", role = " . $row['role'];
 		return $row['role'];
 	}
 
@@ -291,7 +292,7 @@
 					$_SESSION['user'] = $logged_in_user;
 					$_SESSION['user_role'] = $user_role;
 					$_SESSION['success']  = "You are now logged in";
-					header('location: admin/home.php');		  
+					header('location: index.php');		  
 				}else{
 					$_SESSION['user'] = $logged_in_user;
 					$_SESSION['user_role'] = $user_role;
@@ -385,5 +386,80 @@
 		$sql = "SELECT * FROM organizer";
 		$result = $db->query($sql);
 		return $result->fetch_all();
+	}
+
+	function getAllOffers()
+	{
+		global $db;
+
+		$sql = "SELECT * FROM offer";
+		$result = $db->query($sql);
+		return $result->fetch_all();
+	}
+
+	function getHotelPath($idHotel)
+	{
+		global $db;
+		$out = "";
+
+		$sql = "SELECT * FROM hotel WHERE idHotel = '$idHotel'";
+		$result = $db->query($sql);
+		$hotel = mysqli_fetch_assoc($result);
+
+		$idCity = $hotel['idCity'];
+		$sql = "SELECT * FROM city WHERE idCity = '$idCity'";
+		$result = $db->query($sql);
+		$city = mysqli_fetch_assoc($result);
+
+		$idRegion = $city['idRegion'];
+		$sql = "SELECT * FROM region WHERE idRegion = '$idRegion'";
+		$result = $db->query($sql);
+		$region = mysqli_fetch_assoc($result);
+
+		$idCountry = $region['idCountry'];
+		$sql = "SELECT * FROM country WHERE idCountry = '$idCountry'";
+		$result = $db->query($sql);
+		$country = mysqli_fetch_assoc($result);
+
+		$out = $country['country'] . "/" . $region['region'] . "/" . $city['city'] . "/" . $hotel['hotel'];
+
+		return $out;
+	}
+
+	function getOrganizerName($idOrganizer)
+	{
+		global $db;
+
+		$sql = "SELECT * FROM organizer WHERE idOrganizer = '$idOrganizer'";
+		$result = $db->query($sql);
+		$organizer = mysqli_fetch_assoc($result);
+
+		return $organizer['organizer'];
+	}
+
+	function getPhoto($idOffer)
+	{
+		global $db;
+
+		$sql = "SELECT * FROM offer_photo WHERE idOffer = '$idOffer' LIMIT 1";
+		$result = $db->query($sql);
+		$offer_photo = mysqli_fetch_assoc($result);
+
+		$idPhoto = $offer_photo['idPhoto'];
+		$sql = "SELECT * FROM photo WHERE idPhoto = '$idPhoto'";
+		$result = $db->query($sql);
+		$photo = mysqli_fetch_assoc($result);
+
+		return $photo;
+	}
+
+	function getOfferById($idOffer)
+	{
+		global $db;
+
+		$sql = "SELECT * FROM offer WHERE idOffer = '$idOffer'";
+		$result = $db->query($sql);
+
+		return  mysqli_fetch_assoc($result);
 	}
 ?>

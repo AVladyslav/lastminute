@@ -62,6 +62,9 @@
 						<label for="pwd2">Repeat password:</label>
 						<input type="password" class="form-control" name="pwd2" required>
 					</div>
+
+					<a href="login.php">Log In</a>
+					<a href="index.php" style="padding-left: 15px;">Offers</a>
 					<button type="submit" class="btn btn-primary" style="float: right" name="register_btn">Submit</button>
 				</form>
 			</div>
